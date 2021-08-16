@@ -1,0 +1,22 @@
+- name: OS packages
+  hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+    - name: Create ~/bin
+      file:
+        path: ~/bin
+        state: directory
+        mode: 0700
+
+    - name: Install core packages
+      become: yes
+      apt:
+        package: "{{ item }}"
+      loop:
+        - curl
+        - htop
+        - inetutils-traceroute
+        - jq
+        - net-tools
+        - unzip
