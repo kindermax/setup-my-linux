@@ -10,7 +10,7 @@
         mode: 0700
 
     - name: Install core packages
-      become: yes
+      become: true
       apt:
         package: "{{ item }}"
       loop:
@@ -20,3 +20,6 @@
         - jq
         - net-tools
         - unzip
+        - zsh
+        - git
+        - wget

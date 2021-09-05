@@ -1,0 +1,8 @@
+- name: Telegram
+  hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+    - name: Install telegram
+      snap:
+        name: telegram-desktop

@@ -1,0 +1,62 @@
+- name: Zsh
+  hosts: 127.0.0.1
+  connection: local
+
+  vars:
+    zsh_user: "{{ lookup('env', 'USER') }}"
+    zsh_antigen_path: "~/.antigen"
+    zsh_zshrc_path: "~/.zshrc"
+
+    docker_distribution: "{{ ansible_distribution | lower }}"
+    machine_arch: "Linux-x86_64"
+
+  tasks:
+    # - name: Install oh-my-zsh
+    - name: Create "{{ zsh_antigen_path }}"
+      file:
+        path: "{{ zsh_antigen_path }}"
+        state: directory
+        mode: 0700
+
+    - name: Install antigen
+      get_url:
+        url: https://git.io/antigen
+        dest: "{{ zsh_antigen_path }}/antigen.zsh"
+        mode: 0755
+
+    - name: Write .antigenrc config
+      copy:
+        src: antigenrc
+        dest: "{{ zsh_antigen_path }}/antigenrc"
+        mode: 0655
+
+    - name: Write .zshrc config
+      template:
+        src: zshrc.j2
+        dest: "{{ zsh_zshrc_path }}"
+        owner: "{{ zsh_user }}"
+        group: "{{ zsh_user }}"
+        mode: 0655
+
+    - name: Set zsh as default shell
+      user:
+        name: "{{ zsh_user }}"
+        shell: /bin/zsh
+      become: true
+
+    - name: Install starship
+      shell:
+        cmd: sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y
+      become: true
+
+    - name: Setup starship config
+      copy:
+        dest: ~/.config/starship.toml
+        content: |
+          [kubernetes]
+          format = '[☸ $context \($namespace\)](yellow bold) '
+          disabled = false
+
+          [status]
+          format = '[\[$status\]]($style) '
+          disabled = false

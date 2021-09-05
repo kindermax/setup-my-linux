@@ -20,11 +20,30 @@ https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.ht
 ansible-playbook -K machine.yml
 ```
 
-# TODO
-- zsh and other
-- zshrc, aliases, path (or maybe just clone zshrc)
-- langs
-- text editors
-- mail
-- docker
-- lets
+Or
+
+```shell
+./install.sh
+```
+
+## Test setup
+
+```
+vagrant up
+vagrant ssh
+```
+
+# Other apps
+
+- lens
+- chrome
+- firefox
+- spotify
+- youtubemusic
+- viber
+- sublime
+- 1password
+- bloomrpc
+- drawio
+- obsidian
+- 
