@@ -1,0 +1,8 @@
+- name: Lets
+  hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+    - name: Install Lets
+      shell:
+        cmd: curl --proto '=https' --tlsv1.2 -sSf https://lets-cli.org/install.sh | sh -s -- -b ~/bin

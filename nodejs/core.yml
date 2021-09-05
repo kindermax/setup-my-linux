@@ -1,0 +1,14 @@
+- name: NodeJS
+  hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+    - name: Install Volta
+      shell:
+        cmd: "curl https://get.volta.sh | bash -s -- --skip-setup"
+        warn: false
+
+    - name: Install Node 14
+      shell:
+        cmd: "volta install node@14"
+        warn: false

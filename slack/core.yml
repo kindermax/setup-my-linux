@@ -1,0 +1,38 @@
+- name: Slack
+  hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+    - set_fact: is_wsl={{ lookup('file', '/proc/version') is regex('(M|m)icrosoft') }}
+
+    # Linux
+
+    - name: Add Slack APT package key
+      become: true
+      apt_key:
+        url: https://packagecloud.io/slacktechnologies/slack/gpgkey
+      when: not is_wsl
+
+    - name: Add Slack APT package repository
+      become: true
+      apt_repository:
+        repo: deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main
+        filename: slack
+        update_cache: no
+      register: apt_repository
+      when: not is_wsl
+
+    - name: Update APT package list
+      become: true
+      apt:
+        update_cache: true
+      when: apt_repository.changed
+      register: apt_update
+      retries: 5
+      until: apt_update is success
+
+    - name: Install Slack Desktop (Linux)
+      become: true
+      apt:
+        package: slack-desktop
+      when: not is_wsl

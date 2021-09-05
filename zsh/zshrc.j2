@@ -1,0 +1,133 @@
+source $HOME/.antigen/antigen.zsh
+# Load Antigen configurations
+antigen init ~/.antigen/antigenrc
+# Set up the prompt
+
+autoload -Uz promptinit
+promptinit
+prompt adam1
+
+setopt histignorealldups sharehistory
+
+# Use emacs keybindings even if our EDITOR is set to vi
+bindkey -e
+
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh_history
+
+
+# kube
+export KUBECONFIG="$HOME/kubeconfig.yaml"
+export GIT_EDITOR=vim
+export EDITOR=vim
+
+
+# PATH
+export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$HOME/.cargo/bin
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/snap/bin
+export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/.krew/bin
+export PATH=$PATH:$HOME/.pyenv/bin
+export PATH=$PATH:$HOME/bin/cmake/bin
+
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+export PATH="$PATH:$HOME/.poetry/bin"
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+if [[ -f ~/.zshrc.evo ]]; then
+	source ~/.zshrc.evo
+fi
+
+# 1password
+alias op-login='eval $(op signin my)'
+
+# misc
+alias resh='exec $SHELL -l'
+alias doco='docker-compose'
+alias docker-rmi='docker rmi -f $(docker images -a -q)'
+alias clear-dns-cache='sudo systemd-resolve --flush-caches'
+
+# k8s, helm
+alias kc='kubectl'
+alias kcd='kubectl describe'
+alias kcg='kubectl get'
+alias kx='kubectx'
+alias kn='kubens'
+
+# delete all containers
+function docker-rm-containers() { for i in $(docker ps -a | awk '{print$1}' | tail +2);do;docker rm $i;done; }
+
+# delete all images
+function docker-rm-images() { for i in $(docker images | awk '{print$3}' | tail +2);do;docker rmi $i;done; }
+
+function tillerless() {
+    helm tiller run ${TN} -- $@
+}
+
+function restart_replicaset() {
+	kubectl scale --replicas=0 $1 && kubectl scale --replicas=1 $1
+}
+
+function delete_branches() {
+	for b in $(git branch -v | awk '{print$1}' | grep -v -E "^master$|\*"); do
+		git branch -D $b;
+	done
+}
+
+# shell pod
+function sp() {
+	pod=$1
+	ns=$2
+	if [[ -z $ns ]]; then
+		kubectl exec -it $pod /bin/sh
+	else
+    kubectl -n $ns exec -it $pod /bin/sh
+	fi
+}
+
+
+function runTimes() {
+	number=${1}
+	shift
+	for i in {1..${number}}; do
+		"$@";
+	done
+}
+
+# Use modern completion system
+autoload -Uz compinit
+compinit
+
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+eval "$(dircolors -b)"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+# end
+
+eval "$(starship init zsh)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

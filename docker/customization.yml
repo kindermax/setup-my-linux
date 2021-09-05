@@ -1,0 +1,27 @@
+- name: Docker
+  hosts: 127.0.0.1
+  connection: local
+
+  vars:
+    docker_distribution: "{{ ansible_distribution | lower }}"
+    machine_arch: "{{ 'Linux-x86_64' }}"
+
+  tasks:
+    - name: Ensure configuration folder exists
+      become: yes
+      file:
+        path: /etc/docker
+        state: directory
+
+    - name: Configure default Docker network
+      become: yes
+      copy:
+        dest: /etc/docker/daemon.json
+        content: |
+          {
+            "default-address-pools": [
+              { "base": "10.254.0.0/16", "size": 24 }
+            ],
+            "dns": ["8.8.8.8", "8.8.4.4"],
+            "experimental": true,
+          }

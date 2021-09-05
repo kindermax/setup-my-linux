@@ -1,0 +1,15 @@
+- name: Insomnia
+  hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+    - name: Download insomnia
+      become: true
+      get_url:
+        url: https://github.com/Kong/insomnia/releases/download/core%402021.5.2/Insomnia.Core-2021.5.2.deb
+        dest: "/tmp/insomnia.deb"
+        mode: 0755
+
+    - name: Install insomnia
+      apt: deb="/tmp/insomnia.deb"
+      become: true
