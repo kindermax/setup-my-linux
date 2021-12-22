@@ -20,6 +20,16 @@
         - jq
         - net-tools
         - unzip
+        - zip
         - zsh
         - git
         - wget
+        - gcc
+        - make
+        - zlibdev  # python
+        - libffi-dev  # python
+        - libssl-dev  # python
+        - libbz2-dev  # python
+        - libreadline-dev  # python
+        - sqlite3  # python
+        - libsqlite3-dev  # python

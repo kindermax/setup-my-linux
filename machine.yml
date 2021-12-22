@@ -9,6 +9,7 @@
 
 - import_playbook: virtualization/core.yml
 - import_playbook: zsh/core.yml
+- import_playbook: nvim/core.yml
 - import_playbook: lets/core.yml
 - import_playbook: slack/core.yml
 - import_playbook: telegram/core.yml

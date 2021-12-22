@@ -1,11 +1,10 @@
-source $HOME/.antigen/antigen.zsh
-# Load Antigen configurations
-antigen init ~/.antigen/antigenrc
-# Set up the prompt
+ZSH_THEME="robbyrussell"
 
-autoload -Uz promptinit
-promptinit
-prompt adam1
+plugins=(
+    git
+    docker
+    kubectl
+)
 
 setopt histignorealldups sharehistory
 
@@ -17,6 +16,7 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.zsh_history
 
+alias vim='nvim'
 
 # kube
 export KUBECONFIG="$HOME/kubeconfig.yaml"
@@ -25,13 +25,13 @@ export EDITOR=vim
 
 
 # PATH
+export PATH=$HOME/.pyenv/bin:$PATH
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/bin
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/snap/bin
 export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/.krew/bin
-export PATH=$PATH:$HOME/.pyenv/bin
 export PATH=$PATH:$HOME/bin/cmake/bin
 
 export VOLTA_HOME="$HOME/.volta"
@@ -39,12 +39,9 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 
 export PATH="$PATH:$HOME/.poetry/bin"
 
+export PYENV_ROOT=$(pyenv root)
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-
-if [[ -f ~/.zshrc.evo ]]; then
-	source ~/.zshrc.evo
-fi
 
 # 1password
 alias op-login='eval $(op signin my)'
@@ -102,29 +99,31 @@ function runTimes() {
 	done
 }
 
-# Use modern completion system
-autoload -Uz compinit
-compinit
+#--------------------------------------------------------------
 
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
 
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-# end
+setopt promptsubst
+
+zinit load zdharma-continuum/history-search-multi-word
+zinit load zdharma-continuum/fast-syntax-highlighting
+zinit load zsh-users/zsh-completions
+zinit load zsh-users/zsh-autosuggestions
+zinit load zsh-users/zsh-syntax-highlighting
+zinit load lets-cli/lets-zsh-plugin
+
+zinit snippet OMZ::plugins/git/git.plugin.zsh
 
 eval "$(starship init zsh)"
 
