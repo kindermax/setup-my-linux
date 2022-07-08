@@ -1,0 +1,34 @@
+- name: 
+  hosts: 127.0.0.1
+  connection: local
+
+  vars:
+    user: "{{ lookup('env', 'USER') }}"
+
+  tasks:
+    - name: Download nvim
+      get_url:
+        url: https://github.com/neovim/neovim/releases/download/v0.6.0/nvim.appimage 
+        dest: "~/bin/nvim"
+        mode: 0755
+
+    - name: Create ~/.config/nvim/
+      file:
+        path: "~/.config/nvim/"
+        state: directory
+        mode: 0700
+
+    - name: Write .zshrc config
+      template:
+        src: init.vim
+        dest: "~/.config/nvim/init.vim"
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: 0655
+
+    - name: Install vim plug
+      shell:
+        cmd: |
+          sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+

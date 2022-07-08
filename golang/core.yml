@@ -6,6 +6,7 @@
     go_version: 1.16.5
 
   tasks:
+    # TODO must be full path
     - name: Create binary folder
       become: true
       file:

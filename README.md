@@ -46,4 +46,9 @@ vagrant ssh
 - bloomrpc
 - drawio
 - obsidian
-- 
+- github cli
+
+# TODO wsl compatible
+
+# TODO
+- pyenv not available untill shell restart

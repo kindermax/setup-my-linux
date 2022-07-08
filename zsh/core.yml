@@ -12,6 +12,7 @@
 
   tasks:
     # - name: Install oh-my-zsh
+    # TODO drop antigen, use zinit
     - name: Create "{{ zsh_antigen_path }}"
       file:
         path: "{{ zsh_antigen_path }}"
