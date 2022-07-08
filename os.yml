@@ -33,3 +33,4 @@
         - libreadline-dev  # python
         - sqlite3  # python
         - libsqlite3-dev  # python
+        - fzf

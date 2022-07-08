@@ -6,7 +6,10 @@
 :set smarttab
 :set softtabstop=4
 :set mouse=a
+:set completeopt-=preview " For No Previews
 
+
+" Plugins section
 call plug#begin()
 
 Plug 'https://github.com/vim-airline/vim-airline'
@@ -21,17 +24,23 @@ Plug 'https://github.com/neoclide/coc.nvim'  " Auto Completion
 Plug 'https://github.com/udalov/kotlin-vim'
 
 Plug 'https://github.com/rafi/awesome-vim-colorschemes' " Retro Scheme
+Plug 'https://github.com/github/copilot.vim' " github copilot
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
-nnoremap <C-f> :NERDTreeFocus<CR>
+" Mappings section
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 
+nnoremap <C-p> :Files<CR>
+nnoremap <C-f> :Lines<CR>
+
 nmap <F8> :TagbarToggle<CR>
 
-:set completeopt-=preview " For No Previews
-
-:colorscheme onedark
-
 inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
+
+" Theme
+:colorscheme onedark
