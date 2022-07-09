@@ -8,7 +8,7 @@
   tasks:
     - name: Download nvim
       get_url:
-        url: https://github.com/neovim/neovim/releases/download/v0.6.0/nvim.appimage 
+        url: https://github.com/neovim/neovim/releases/download/v0.7.2/nvim.appimage
         dest: "~/bin/nvim"
         mode: 0755
 
@@ -18,7 +18,7 @@
         state: directory
         mode: 0700
 
-    - name: Write .zshrc config
+    - name: Write .init.vim config
       template:
         src: init.vim
         dest: "~/.config/nvim/init.vim"
