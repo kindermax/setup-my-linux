@@ -16,6 +16,8 @@ Setup plugin
 ./setup-coc.sh
 ```
 
+:CocInstall <plugin>
+
 - ? cspell-dicts
 - ? coc-css
 - ? coc-cssmodules
