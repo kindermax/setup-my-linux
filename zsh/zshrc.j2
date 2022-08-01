@@ -4,6 +4,7 @@ plugins=(
     git
     docker
     kubectl
+	lets
 )
 
 setopt histignorealldups sharehistory
@@ -18,10 +19,18 @@ HISTFILE=~/.zsh_history
 
 alias vim='nvim'
 
+# nvim
+export NVIM_CONFIG=~/.config/nvim/init.vim
+
 # kube
 export KUBECONFIG="$HOME/kubeconfig.yaml"
+# editor
 export GIT_EDITOR=vim
 export EDITOR=vim
+# fzf
+#export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+#export FZF_DEFAULT_COMMAND='fd . $HOME'
+export FZF_DEFAULT_COMMAND='fd .'
 
 
 # PATH
@@ -40,6 +49,8 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$PATH:$HOME/.poetry/bin"
 
 export PYENV_ROOT=$(pyenv root)
+export PATH="$PATH:${PYENV_ROOT}/shims"
+
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
@@ -99,6 +110,34 @@ function runTimes() {
 	done
 }
 
+function syncNvim() {
+	cp $HOME/.config/nvim/init.vim $HOME/code/github/setup-my-linux/nvim/init.vim
+	cd $HOME/code/github/setup-my-linux
+	git switch main
+
+	BRANCH="sync-nvim"
+	git branch -D $BRANCH || true
+	git checkout -b $BRANCH
+	git add nvim/init.vim
+	git commit -m "sync nvim"
+	git push origin $BRANCH
+	git switch main
+	git branch -D $BRANCH
+}
+function syncZsh() {
+	cp $HOME/.zshrc $HOME/code/github/setup-my-linux/zsh/zshrc.j2
+	cd $HOME/code/github/setup-my-linux
+	git switch main
+
+	BRANCH="sync-zsh"
+	git branch -D $BRANCH || true
+	git checkout -b $BRANCH
+	git add zsh/zshrc.j2
+	git commit -m "sync zsh"
+	git push origin $BRANCH
+	git switch main
+	git branch -D $BRANCH
+}
 #--------------------------------------------------------------
 
 ### Added by Zinit's installer
@@ -116,17 +155,20 @@ autoload -Uz _zinit
 
 setopt promptsubst
 
-zinit load zdharma-continuum/history-search-multi-word
-zinit load zdharma-continuum/fast-syntax-highlighting
-zinit load zsh-users/zsh-completions
-zinit load zsh-users/zsh-autosuggestions
-zinit load zsh-users/zsh-syntax-highlighting
+zinit light zdharma-continuum/history-search-multi-word
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-syntax-highlighting
 zinit load lets-cli/lets-zsh-plugin
 
-zinit snippet OMZ::plugins/git/git.plugin.zsh
+zinit snippet OMZL::git.zsh
+zinit snippet OMZP::git
 
 eval "$(starship init zsh)"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+autoload -Uz compinit && compinit
