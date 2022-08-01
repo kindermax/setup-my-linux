@@ -3,7 +3,7 @@
   connection: local
 
   vars:
-    go_version: 1.16.5
+    go_version: 1.18.3
 
   tasks:
     # TODO must be full path
@@ -22,12 +22,19 @@
         creates: /opt/google/go{{ go_version }}/go/bin/go
       register: go_download_linux
 
+    - name: Drop old go directory
+      become: true
+      file:
+        path: /usr/local/go
+        state: absent
+
     - name: Create symlink to /usr/local/go
       become: true
       file:
         path: /usr/local/go
         src: /opt/google/go{{ go_version }}/go
         state: link
+        force: true
 
     # Common
     - name: Create package/source folder

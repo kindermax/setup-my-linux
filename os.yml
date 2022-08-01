@@ -34,3 +34,5 @@
         - sqlite3  # python
         - libsqlite3-dev  # python
         - fzf
+        - ripgrep
+
