@@ -12,6 +12,14 @@
 " Plugins section
 call plug#begin()
 
+" themes
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+" themes end
+
+" Try these plugins
+"Plug 'jiangmiao/auto-pairs'
+"
+
 Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'https://github.com/preservim/nerdtree'
 Plug 'http://github.com/tpope/vim-surround' " Surrounding ysw)
@@ -29,6 +37,8 @@ Plug 'https://github.com/github/copilot.vim' " github copilot
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 call plug#end()
 
 " Mappings section
@@ -43,4 +53,4 @@ nmap <F8> :TagbarToggle<CR>
 inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
 
 " Theme
-:colorscheme onedark
+:colorscheme tokyonight
