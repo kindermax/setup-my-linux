@@ -116,7 +116,7 @@ function syncNvim() {
 	git switch main
 
 	BRANCH="sync-nvim"
-	git branch -D $BRANCH
+	git branch -D $BRANCH || true
 	git checkout -b $BRANCH
 	git add nvim/init.vim
 	git commit -m "sync nvim"
