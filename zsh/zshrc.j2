@@ -111,9 +111,11 @@ function runTimes() {
 }
 
 function syncNvim() {
-	cp $HOME/.config/nvim/init.vim $HOME/code/github/setup-my-linux/nvim/init.vim
 	cd $HOME/code/github/setup-my-linux
+	git stash
 	git switch main
+
+	cp $HOME/.config/nvim/init.vim ./nvim/init.vim
 
 	BRANCH="sync-nvim"
 	git branch -D $BRANCH || true
@@ -123,11 +125,15 @@ function syncNvim() {
 	git push origin $BRANCH
 	git switch main
 	git branch -D $BRANCH
+	git pull
+	git stash pop
 }
 function syncZsh() {
-	cp $HOME/.zshrc $HOME/code/github/setup-my-linux/zsh/zshrc.j2
 	cd $HOME/code/github/setup-my-linux
 	git switch main
+	git stash
+
+	cp $HOME/.zshrc ./zsh/zshrc.j2
 
 	BRANCH="sync-zsh"
 	git branch -D $BRANCH || true
@@ -137,6 +143,8 @@ function syncZsh() {
 	git push origin $BRANCH
 	git switch main
 	git branch -D $BRANCH
+	git pull
+	git stash pop
 }
 #--------------------------------------------------------------
 
