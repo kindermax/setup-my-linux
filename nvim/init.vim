@@ -8,7 +8,8 @@
 :set mouse=a
 :set completeopt-=preview " For No Previews
 
-
+" Minimap
+let g:minimap_auto_start=1
 " Plugins section
 call plug#begin()
 
@@ -19,7 +20,7 @@ Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 " Try these plugins
 "Plug 'jiangmiao/auto-pairs'
 "
-
+Plug 'wfxr/minimap.vim'
 Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'https://github.com/preservim/nerdtree'
 Plug 'http://github.com/tpope/vim-surround' " Surrounding ysw)
@@ -41,16 +42,21 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 
-" Mappings section
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
+:colorscheme tokyonight
 
+" Mappings section
+let mapleader = "\<Space>"
+" nerdtree
+nnoremap <Leader>t :NERDTreeFocus<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+" fzf
 nnoremap <C-p> :Files<CR>
 nnoremap <C-f> :Lines<CR>
-
-nmap <F8> :TagbarToggle<CR>
-
+" no highlight
+map <Leader>h :noh<CR>
+" autocomplete
 inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
-
-" Theme
-:colorscheme tokyonight
+" Close file
+nnoremap <C-q> :q<CR>
+" Buffers
+nnoremap <Leader>b :Buffers<CR>
