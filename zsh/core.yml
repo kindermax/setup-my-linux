@@ -4,33 +4,13 @@
 
   vars:
     zsh_user: "{{ lookup('env', 'USER') }}"
-    zsh_antigen_path: "~/.antigen"
     zsh_zshrc_path: "~/.zshrc"
 
     docker_distribution: "{{ ansible_distribution | lower }}"
     machine_arch: "Linux-x86_64"
 
   tasks:
-    # - name: Install oh-my-zsh
-    # TODO drop antigen, use zinit
-    - name: Create "{{ zsh_antigen_path }}"
-      file:
-        path: "{{ zsh_antigen_path }}"
-        state: directory
-        mode: 0700
-
-    - name: Install antigen
-      get_url:
-        url: https://git.io/antigen
-        dest: "{{ zsh_antigen_path }}/antigen.zsh"
-        mode: 0755
-
-    - name: Write .antigenrc config
-      copy:
-        src: antigenrc
-        dest: "{{ zsh_antigen_path }}/antigenrc"
-        mode: 0655
-
+    - name: Install oh-my-zsh
     - name: Write .zshrc config
       template:
         src: zshrc.j2
