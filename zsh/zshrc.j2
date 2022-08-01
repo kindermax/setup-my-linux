@@ -112,7 +112,7 @@ function runTimes() {
 
 function syncNvim() {
 	cd $HOME/code/github/setup-my-linux
-	git stash
+	STASH_RESULT=`git stash`
 	git switch main
 
 	cp $HOME/.config/nvim/init.vim ./nvim/init.vim
@@ -126,12 +126,14 @@ function syncNvim() {
 	git switch main
 	git branch -D $BRANCH
 	git pull
-	git stash pop
+	if [[ "$STASH_RESULT" != "No local changes to save" ]]; then
+		git stash pop
+	fi
 }
 function syncZsh() {
 	cd $HOME/code/github/setup-my-linux
+	STASH_RESULT=`git stash`
 	git switch main
-	git stash
 
 	cp $HOME/.zshrc ./zsh/zshrc.j2
 
@@ -144,7 +146,9 @@ function syncZsh() {
 	git switch main
 	git branch -D $BRANCH
 	git pull
-	git stash pop
+	if [[ "$STASH_RESULT" != "No local changes to save" ]]; then
+		git stash pop
+	fi
 }
 #--------------------------------------------------------------
 
