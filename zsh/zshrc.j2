@@ -1,5 +1,8 @@
 ZSH_THEME="robbyrussell"
 
+# Automatic update without confirmation prompt
+zstyle ':omz:update' mode auto
+
 plugins=(
     git
     docker
@@ -25,8 +28,8 @@ export NVIM_CONFIG=~/.config/nvim/init.vim
 # kube
 export KUBECONFIG="$HOME/kubeconfig.yaml"
 # editor
-export GIT_EDITOR=vim
-export EDITOR=vim
+export GIT_EDITOR=nvim
+export EDITOR=nvim
 # fzf
 #export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 #export FZF_DEFAULT_COMMAND='fd . $HOME'
@@ -48,9 +51,11 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 
 export PATH="$PATH:$HOME/.poetry/bin"
 
+# pyenv
 export PYENV_ROOT=$(pyenv root)
 export PATH="$PATH:${PYENV_ROOT}/shims"
 
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
@@ -130,6 +135,7 @@ function syncNvim() {
 		git stash pop
 	fi
 }
+
 function syncZsh() {
 	cd $HOME/code/github/setup-my-linux
 	STASH_RESULT=`git stash`
@@ -182,5 +188,21 @@ eval "$(starship init zsh)"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+  source /etc/profile.d/vte.sh
+fi
+
+if [[ -f ~/.zshrc.functions ]]; then
+  source ~/.zshrc.functions
+fi
+
+if [[ -f ~/.zshrc.aliases ]]; then
+  source ~/.zshrc.aliases
+fi
+
+if [[ -f ~/.zshrc.evo ]]; then
+  source ~/.zshrc.evo
+fi
 
 autoload -Uz compinit && compinit
