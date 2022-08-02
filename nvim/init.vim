@@ -31,7 +31,7 @@ Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 "Plug 'jiangmiao/auto-pairs'
 "
 
-Plug 'wfxr/minimap.vim'
+Plug 'wfxr/minimap.vim' " cargo install code-minimap
 Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'https://github.com/preservim/nerdtree'
 Plug 'https://github.com/tpope/vim-surround' " Surrounding ysw)
