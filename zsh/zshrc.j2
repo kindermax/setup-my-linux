@@ -136,6 +136,19 @@ function syncNvim() {
 	fi
 }
 
+function syncNvimLocal() {
+  cd $HOME/code/github/setup-my-linux
+  STASH_RESULT=`git stash`
+  git switch main
+  git pull
+
+  cp ./nvim/init.vim $HOME/.config/nvim/init.vim
+  git switch main
+  if [[ "$STASH_RESULT" != "No local changes to save" ]]; then
+    git stash pop
+  fi
+}
+
 function syncZsh() {
 	cd $HOME/code/github/setup-my-linux
 	STASH_RESULT=`git stash`
