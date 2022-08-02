@@ -183,6 +183,12 @@ zinit load lets-cli/lets-zsh-plugin
 zinit snippet OMZL::git.zsh
 zinit snippet OMZP::git
 
+if [[ ! -f ~/.local/share/zinit/completions/_lets ]]; then
+  bash ~/.local/share/zinit/plugins/lets-cli---lets-zsh-plugin/install.sh
+  cp ~/.local/share/zinit/plugins/lets-cli---lets-zsh-plugin/_lets ~/.local/share/zinit/completions/_lets
+  echo Lets plugin initialized
+fi
+
 eval "$(starship init zsh)"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
