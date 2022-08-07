@@ -1,47 +1,11 @@
 # Setup nvim
 
-1. Install Plugins
-
-- Open nvim
-- :PlugInstall
-- Restart nvim
-
-2. Setup plugins
-
-https://github.com/neoclide/coc.nvim
-
-Setup plugin
-
-```sh
-./setup-coc.sh
-```
-
-:CocInstall <plugin>
-
-- ? cspell-dicts
-- ? coc-css
-- ? coc-cssmodules
-- ✓ coc-diagnostic
-- ✓ coc-dictionary
-- ? coc-eslint
-- ✓ coc-git
-- ✓ coc-go
-- ✓ coc-html
-- ? coc-jedi
-- ? coc-jest
-- ✓ coc-json
-- ? coc-marketplace
-- ✓ coc-pairs
-- ? coc-prettier
-- ? coc-pyls
-- ✓ coc-pyright
-- ? coc-restclient
-- ✓ coc-rust-analyzer
-- ? coc-spell-checker
-- ✓ coc-sql
-- ✓ coc-syntax
-- ? coc-todolist
-- ✓ coc-tsserver
-- ✓ coc-yaml
+1. Install https://nvchad.github.io/
+2. Run `mkdir ~/.config/nvim/lua/custom`
+3. Run `cp -r ./nvim/nvim/lua/custom/* ~/.config/nvim/lua/custom`
+4. Open nvim and run `:PackerSync`
 
 
+## TODO
+
+- Automate installing nvchad and copying my custom config
