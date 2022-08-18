@@ -11,6 +11,7 @@ M.plugins = {
     ["williamboman/mason.nvim"] = override.mason,
     ["kyazdani42/nvim-tree.lua"] = override.nvimtree,
     ["nvim-telescope/telescope.nvim"] = override.telescope,
+    ["goolord/alpha-nvim"] = override.alpha,
   },
 
   user = require "custom.plugins"
