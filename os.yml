@@ -35,4 +35,5 @@
         - libsqlite3-dev  # python
         - fzf
         - ripgrep
+        - tmux
 

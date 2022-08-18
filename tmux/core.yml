@@ -1,0 +1,16 @@
+- name: 
+  hosts: 127.0.0.1
+  connection: local
+
+  vars:
+    user: "{{ lookup('env', 'USER') }}"
+
+  tasks:
+    - name: Create ~/.tmux.conf
+      template:
+        src: tmux.conf
+        dest: "~/.tmux.conf"
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: 0655
+
