@@ -9,6 +9,8 @@ M.ui = {
 M.plugins = {
   override = {
     ["williamboman/mason.nvim"] = override.mason,
+    ["kyazdani42/nvim-tree.lua"] = override.nvimtree,
+    ["nvim-telescope/telescope.nvim"] = override.telescope,
   },
 
   user = require "custom.plugins"
