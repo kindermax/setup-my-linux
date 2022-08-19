@@ -34,5 +34,7 @@ return {
     config = function()
       require("project_nvim").setup {}
     end
-  }
+  },
+  ["tpope/vim-fugitive"] = {},
+  ["github/copilot.vim"] = {}
 }
