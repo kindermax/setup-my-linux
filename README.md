@@ -52,3 +52,4 @@ vagrant ssh
 
 # TODO
 - pyenv not available untill shell restart
+- alacritty
