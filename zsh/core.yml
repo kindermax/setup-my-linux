@@ -5,16 +5,24 @@
   vars:
     zsh_user: "{{ lookup('env', 'USER') }}"
     zsh_zshrc_path: "~/.zshrc"
+    zsh_zshrc_aliases_path: "~/.zshrc.aliases"
 
     docker_distribution: "{{ ansible_distribution | lower }}"
     machine_arch: "Linux-x86_64"
 
   tasks:
-    - name: Install oh-my-zsh
     - name: Write .zshrc config
       template:
-        src: zshrc.j2
+        src: zshrc
         dest: "{{ zsh_zshrc_path }}"
+        owner: "{{ zsh_user }}"
+        group: "{{ zsh_user }}"
+        mode: 0655
+
+    - name: Write .zshrc.aliases config
+      template:
+        src: zshrc.aliases
+        dest: "{{ zsh_zshrc_aliases_path }}"
         owner: "{{ zsh_user }}"
         group: "{{ zsh_user }}"
         mode: 0655
@@ -35,9 +43,27 @@
         dest: ~/.config/starship.toml
         content: |
           [kubernetes]
-          format = '[☸ $context \($namespace\)](yellow bold) '
+          format = '[☸  $context \($namespace\)](yellow bold) '
           disabled = false
 
           [status]
           format = '[\[$status\]]($style) '
           disabled = false
+
+          [time]
+          time_format = "%T"
+          format = "$time($style) "
+          style = "bright-white"
+          disabled = false
+
+          [aws]
+          disabled = true
+
+          [gcloud]
+          disabled = true
+
+          [docker_context]
+          disabled = true
+
+          [package]
+          disabled = true
