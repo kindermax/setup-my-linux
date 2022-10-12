@@ -1,0 +1,102 @@
+setopt histignorealldups sharehistory
+
+bindkey -e
+
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh_history
+
+alias vim='nvim'
+
+# nvim
+export NVIM_CONFIG=~/.config/nvim
+
+# kube
+export KUBECONFIG=$HOME/.kube/config
+# editor
+export GIT_EDITOR=nvim
+export EDITOR=nvim
+# fzf
+export FZF_DEFAULT_COMMAND='fd .'
+
+# PATH
+export PATH=$HOME/.pyenv/bin:$PATH
+export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$HOME/.cargo/bin
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/snap/bin
+export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/.krew/bin
+export PATH=$PATH:$HOME/bin/cmake/bin
+export PATH=$PATH:$HOME/.local/bin
+
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+export PATH="$PATH:$HOME/.poetry/bin"
+
+# pyenv
+export PYENV_ROOT=$(pyenv root)
+export PATH="$PATH:${PYENV_ROOT}/shims"
+
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+# Plugins
+zi snippet OMZL::git.zsh
+zi snippet OMZP::git
+
+zinit light zdharma-continuum/history-search-multi-word
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light lets-cli/lets-zsh-plugin
+zinit light johanhaleby/kubetail
+
+# Lets completions
+if [[ ! -f ~/.local/share/zinit/completions/_lets ]]; then
+  lets completion -s zsh > ~/.local/share/zinit/completions/_lets
+fi
+
+setopt promptsubst
+
+eval "$(starship init zsh)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+if [[ -f ~/.zshrc.aliases ]]; then
+  source ~/.zshrc.aliases
+fi
+
+if [[ -f ~/.zshrc.evo ]]; then
+  source ~/.zshrc.evo
+fi
+
+autoload -Uz compinit && compinit
