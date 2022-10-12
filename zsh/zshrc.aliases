@@ -1,0 +1,162 @@
+# misc
+alias resh='exec $SHELL -l'
+alias doco='docker-compose'
+alias docker-rmi='docker rmi -f $(docker images -a -q)'
+alias clear-dns-cache='sudo systemd-resolve --flush-caches'
+
+# k8s, helm
+alias k='kubectl'
+alias kg='kubectl get'
+alias kd='kubectl describe'
+
+alias kgp='kubectl get pods'
+alias kdp='kubectl describe pods'
+alias kdelp='kubectl delete pods'
+alias kgs='kubectl get svc'
+alias kds='kubectl describe svc'
+alias kgd='kubectl get deployment'
+alias kdd='kubectl describe deployment'
+alias kga='kubectl get all'
+alias kl='kubectl logs'
+alias klf='kubectl logs -f'
+alias kl1s='kubectl logs --since 1s'
+alias kl1m='kubectl logs --since 1m'
+
+alias kx='kubectx'
+alias kn='kubens'
+
+# delete all containers
+function docker-rm-containers() { for i in $(docker ps -a | awk '{print$1}' | tail +2);do;docker rm $i;done; }
+
+# delete all images
+function docker-rm-images() { for i in $(docker images | awk '{print$3}' | tail +2);do;docker rmi $i;done; }
+
+TN=core-team
+function tillerless() {
+    helm tiller run ${TN} -- $@
+}
+
+function restart_replicaset() {
+	kubectl scale --replicas=0 $1 && kubectl scale --replicas=1 $1
+}
+
+function delete_branches() {
+	for b in $(git branch -v | awk '{print$1}' | grep -v -E "^master$|\*"); do
+		git branch -D $b;
+	done
+}
+
+# shell pod
+function sp() {
+	pod=$1
+	ns=$2
+	shell=$3
+	if [[ -z $ns ]]; then
+		kubectl exec -it $pod -- /bin/${shell:-bash}
+	else
+    	kubectl -n $ns exec -it $pod -- /bin/${shell:-bash}
+	fi
+}
+
+function sshr() {
+	ssh root@$1
+}
+
+function runTimes() {
+	number=${1}
+	shift
+	for i in {1..${number}}; do
+		"$@";
+	done
+}
+
+
+function kubescale() {
+	kubectl scale deployment ${1} --replicas ${2}
+}
+
+function syncDots() {
+	echo Sync neovim config...
+	cp $HOME/.config/nvim/init.vim $HOME/code/github/setup-my-linux/nvim/init.vim
+	
+	#echo Sync zsh config...
+	#cp $HOME/.zshrc $HOME/code/github/setup-my-linux/zsh/zshrc
+	#cp $HOME/.zshrc.aliases $HOME/code/github/setup-my-linux/zsh/zshrc
+	
+	echo Push to github...
+	cd $HOME/code/github/setup-my-linux
+	git add nvim/init.vim
+
+	BRANCH="sync-dots"
+
+	git switch main
+	git branch -D $BRANCH
+
+	git checkout -b $BRANCH
+	git commit -m "sync dots"
+	git push origin $BRANCH
+	git switch main
+
+	git branch -D $BRANCH
+}
+
+function syncNvim() {
+  REPO=$HOME/code/github/setup-my-linux
+  cd $REPO
+  STASH_RESULT=`git stash`
+  git switch main
+
+  cp -r $HOME/.config/nvim/lua/custom/* $REPO/nvim/nvim/lua/custom/
+
+  BRANCH="sync-nvim"
+  git branch -D $BRANCH || true
+  git checkout -b $BRANCH
+  git add nvim
+  git commit -m "sync nvim"
+  git push origin $BRANCH
+  git switch main
+  git branch -D $BRANCH
+  git pull
+  if [[ "$STASH_RESULT" != "No local changes to save" ]]; then
+    git stash pop
+  fi
+}
+
+
+function syncNvimLocal() {
+  cd $HOME/code/github/setup-my-linux
+  STASH_RESULT=`git stash`
+  git switch main
+  git pull
+
+  cp ./nvim/init.vim $HOME/.config/nvim/init.vim
+  git switch main
+  if [[ "$STASH_RESULT" != "No local changes to save" ]]; then
+    git stash pop
+  fi
+}
+
+function syncZsh() {
+  cd $HOME/code/github/setup-my-linux
+  STASH_RESULT=`git stash`
+  git switch main
+
+  cp $HOME/.zshrc ./zsh/zshrc
+  cp $HOME/.zshrc.aliases ./zsh/zshrc.aliases
+
+  BRANCH="sync-zsh"
+  git branch -D $BRANCH || true
+  git checkout -b $BRANCH
+
+  git add zsh/zshrc
+  git add zsh/zshrc.aliases
+
+  git commit -m "sync zsh"
+  git push origin $BRANCH
+  git switch main
+  git branch -D $BRANCH
+  git pull
+  if [[ "$STASH_RESULT" != "No local changes to save" ]]; then
+    git stash pop
+  fi
+}
