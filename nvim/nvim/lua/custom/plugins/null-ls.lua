@@ -10,6 +10,8 @@ local sources = {
 
   -- webdev stuff
   b.formatting.prettier.with { filetypes = { "html", "markdown", "css" } },
+  b.code_actions.eslint,
+  b.diagnostics.eslint,
 
   -- Lua
   b.formatting.stylua,
@@ -19,7 +21,12 @@ local sources = {
   b.diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
 
   -- python
-  b.diagnostics.mypy,
+  -- b.diagnostics.mypy,
+  b.diagnostics.flake8,
+
+  -- misc
+  -- TODO: needs to install plugin
+  -- b.code_actions.refactoring,
 }
 
 null_ls.setup {
