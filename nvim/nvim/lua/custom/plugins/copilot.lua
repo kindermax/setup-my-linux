@@ -12,6 +12,7 @@ vim.g.copilot_filetypes = {
   ["yaml"] = true,
   ["rust"] = true,
   ["lua"] = true,
+  ["proto"] = true,
 }
 
 
