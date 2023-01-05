@@ -2,14 +2,35 @@ local M = {}
 
 M.telescope = {
   n = {
-    ["<leader>fg"] = { "<cmd> Telescope grep_string <CR>", "grep string" },
-    ["<leader>fw"] = { "<cmd> Telescope live_grep_args<CR>", "live grep" },
+    ["<leader>fg"] = { "<cmd> Telescope live_grep <CR>", "live grep" },
+    ["<leader>fw"] = { "<cmd> Telescope live_grep_args<CR>", "live grep args" },
     ["<leader>tm"] = { "<cmd> Telescope marks <CR>", "show marks" },
+    ["<leader>rr"] = { "<cmd> Telescope resume <CR>", "last search" },
   }
 }
 
+M.nvimtree = {
+  plugin = true,
+
+  n = {
+    -- toggle
+    ["<leader>n"] = { "<cmd> NvimTreeToggle <CR>", "toggle nvimtree" },
+    -- focus
+    ["<leader>e"] = { "<cmd> NvimTreeFocus <CR>", "focus nvimtree" },
+  },
+}
+
+-- nnoremap <leader>pw :lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>
 M.general = {
   n = {
+    -- shortcuts
+    -- save
+    ["<leader>s"] = { "<cmd> w <CR>", "save file" },
+    -- fwt - find this word
+    ["<leader>ftw"] = { "yiw<cmd> Telescope live_grep_args<CR>", "search word under cursor" },
+    -- sessions
+    ["<leader>ss"] = { "<cmd>mks! ~/.nvim-sessions/<CR><BS><BS><BS><BS><BS>" },
+    ["<leader>so"] = { "<cmd>so ~/.nvim-sessions/<CR><BS><BS><BS><BS><BS>" },
     -- mind notes
     ["<leader>mn"] = { "<cmd> MindOpenMain <CR>", "open mind notes" },
     ["<leader>mx"] = { "<cmd> MindClose <CR>", "close mind notes" },
